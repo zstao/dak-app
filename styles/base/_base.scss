@@ -1,0 +1,31 @@
+img{
+    max-width: 100%;
+}
+hr{
+    border-top: 1px dashed;
+}
+code{
+    display: inline !important;
+}
+pre > code{
+    display: block !important;
+}
+html,
+body {
+    @extend .shape--cover;
+}
+
+* {
+    box-sizing: border-box;
+}
+html body input[disabled]{
+    cursor: not-allowed;
+}
+
+[contenteditable="true"] {
+    @extend %bare;
+}
+
+.label {
+    vertical-align: top;
+}

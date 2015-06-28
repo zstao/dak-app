@@ -1,0 +1,25 @@
+/**
+ * get mapping color
+ * @param  {string} $schema mapping schema, see '/configs/_color.scss'
+ * @return {colorValue}        color
+ */
+@function c($schema){
+    @if map-get($color-schemas,$schema){
+        @return map-get($c,$schema);
+    } @else {
+        @return white;
+    }
+}
+
+/**
+ * get mapping background-color
+ * @param  {string} $schema mapping schema, see '/configs/_color.scss'
+ * @return {colorValue}    background-color
+ */
+@function bgc($schema){
+    @if map-get($color-schemas,$schema){
+        @return map-get($bgc,$schema);
+    } @else {
+        @return white;
+    }
+}

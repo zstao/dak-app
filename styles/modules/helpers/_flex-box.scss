@@ -1,0 +1,101 @@
+/* =====================
+ * flex-box
+ * ------------------------------
+ *  mx: main axis
+ *  cx: cross axis
+ *
+ * 
+ * ========================================================*/
+%flex{
+    @include display(flex);
+    @include flex-wrap(wrap);
+    @include align-items(center);
+    @include align-content(space-around);
+}
+%flex--row{
+    @extend %flex;
+    @include flex-direction(row);
+}
+%flex--column{
+    @extend %flex;
+    @include flex-direction(column);
+}
+
+
+/* *
+ * flex helper
+ * ==================================== */
+.flex {
+    &--row {
+        @extend %flex--row;
+    }
+    &--column {
+        @extend %flex--column;
+    }
+
+    // flex-wrap
+    &--wrap {
+        @include flex-wrap(wrap);
+    }
+    &--nowrap {
+        @include flex-wrap(nowrap);
+    }
+
+    // justify-content
+    &-mx--start {
+        @include justify-content(flex-start); 
+    }
+    &-mx--end {
+        @include justify-content(flex-end); 
+    }
+    &-mx--center {
+        @include justify-content(center); 
+    }
+    &-mx--around {
+        @include justify-content(space-around); 
+    }
+    &-mx--between {
+        @include justify-content(space-between); 
+    }
+
+    // align-items
+    &-cx--start {
+        @include align-items(flex-start); 
+    }
+    &-cx--end {
+        @include align-items(flex-end); 
+    }
+    &-cx--center {
+        @include align-items(center); 
+    }
+    &-cx--stretch {
+        @include align-items(stretch);
+    }
+    
+    // align-content
+    &-cx-content-start {
+        @include align-content(flex-start);
+    }
+    &-cx-content-end {
+        @include align-content(flex-end);
+    }
+    &-cx-content-center {
+        @include align-content(center);
+    }
+    &-cx-content-between {
+        @include align-content(space-between);
+    }
+    &-cx-content-around {
+        @include align-content(space-around);
+    }
+    &-cx-content-stretch {
+        @include align-content(stretch);
+    }
+}
+
+// flex: n
+@for $i from 0 through 10{
+    .flex-#{$i}{
+        @include flex($i);
+    }
+}

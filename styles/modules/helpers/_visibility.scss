@@ -1,0 +1,31 @@
+.box-x--auto{
+    overflow-x: auto;
+}
+.box-x--clip{
+    overflow-x: hidden;
+}
+.box-y--auto{
+    overflow-y: auto;
+}
+.box-y--clip{
+    overflow-y: hidden;
+}
+.box--auto{
+   @extend .box-x--auto;
+   @extend .box-y--auto;
+}
+.box--clip{
+    @extend .box-x--clip;
+    @extend .box-y--clip;
+}
+.transparent {
+    opacity: 0;
+}
+.resize {
+    &--v {
+        resize: vertical;
+    }
+}
+.hidden {
+    display: none;
+}

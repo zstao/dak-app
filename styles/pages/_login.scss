@@ -1,0 +1,14 @@
+body {
+}
+.login-form {
+  width: $login-form_width;
+  margin: 120px auto;
+  max-height: 100%;
+  max-width: 100%;
+}
+.login__welcome-text {
+    @extend .ptb--extra;
+}
+.login-error {
+  display: none;
+}

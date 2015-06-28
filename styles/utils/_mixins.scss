@@ -1,0 +1,45 @@
+/* mixin utils
+=============================== */
+/**
+ * state color for <a>
+ * @param  {colorType} $link:    white         color value for :link
+ * @param  {colorType} $visited: $link         color value for :visited
+ * @param  {colorType} $hover:   $link         color value for :hover
+ * @param  {colorType} $actived: $link         color value for :actived
+ */
+@mixin link-color($link: white, $visited: $link, $hover: $link, $actived: $link) {
+    &:link {
+        color: $link;
+    }
+    &:visited {
+        color: $visited;
+    }
+    &:hover {
+        color: $hover;
+    }
+    &:active {
+        color: $actived;
+    }
+}
+
+/**
+ * hover bgc for <a>
+ * @param  {[type]} $link:    white         [description]
+ * @param  {[type]} $visited: $link         [description]
+ * @param  {[type]} $hover:   $link         [description]
+ * @param  {[type]} $actived: $link         [description]
+ * @return {[type]}           [description]
+ */
+@mixin link-hover($color: null, $bgc: null) {
+    &:hover {
+        color: $color;
+        background-color: $bgc;
+    }
+}
+
+@mixin link-decoration($state: 'hover', $decoration: null) {
+    &:#{$state} {
+        text-decoration: $decoration;
+    }
+}
+

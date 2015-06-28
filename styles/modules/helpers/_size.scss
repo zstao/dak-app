@@ -1,0 +1,39 @@
+/* ====================================
+ * handy width|height helpers
+ * ===================================== */
+@for $i from 0 through 10{
+    .w-#{$i}{
+        width: $i * 10%;
+    }
+    .h-#{$i}{
+        height: $i * 10%;
+    }
+}
+
+$totalColumn: 12;
+@for $i from 0 through $totalColumn{
+    .col-#{$i} {
+        width: $i / $totalColumn * 100%;
+    }
+}
+
+.row{
+    &--half {
+        @extend .w-5;
+    }
+    &--full {
+        @extend .w-10;
+    }
+}
+.column{
+    &--half {
+        @extend .h-5;
+    }
+    &--full {
+        @extend .h-10; 
+    }
+}
+.shape--cover{
+    @extend .row--full;
+    @extend .column--full;
+}
