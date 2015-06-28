@@ -27,7 +27,7 @@ var config = {
 
     },
     connect: {
-        root: './',
+        root: '/',
         port: '8889',
         livereload: true
     }
@@ -81,6 +81,3 @@ gulp.task('watch', function() {
 });
 
 gulp.task('dev', ['connect', 'watch']);
-// gulp.task('dev', ['connect', 'watch'], function() {
-//     gulp.start('watch');
-// });
