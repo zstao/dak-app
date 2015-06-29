@@ -1,0 +1,14 @@
+.input {
+    @extend .pl--lg;
+    @extend .ptb;
+    @extend .pr;
+    &--bare {
+        @extend %bare;
+    }
+    &--flat {
+        border-bottom: 1px solid;
+    }
+    &--light {
+        color: grey;
+    }
+}

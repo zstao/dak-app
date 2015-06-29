@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <link rel="shortcut icon" href="/statics/images/favicon.ico">
+        <link rel="stylesheet" href="/bower_components/normalize.css/normalize.css">
+        <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/dist/styles/root-manage.min.css">
+    </head>
+    <body>
+        <!-- action bar -->
+        <div class="action-bar">
+            <div class="v-card">
+                <img src="/statics/images/default-avatar.png" alt="" class="v-card__avatar img-circle cursor--pointer">
+                <span class="label label-primary">欢迎您</span>
+            </div>
+            <nav class="tab-navs">
+                <a href="" class="tab-navs__item tab-navs__item--active">配置邮箱</a>
+                <a href="" class="tab-navs__item">创建用户</a>
+                <a href="" class="tab-navs__item">查看用户</a>
+            </nav>
+        </div>
+        <!-- main content -->
+        <div class="main-body">
+            <!-- email configuration tab -->
+            <div class="main-body__tab main-body__tab--active tab">
+                <form class="form form__mail-conf" role="form">
+                    <div class="form-group">
+                        <label for="email__address">邮箱地址</label>
+                        <input type="email" class="form-control" id="email__address" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="email__password">邮箱密码</label>
+                        <input type="password" class="form-control" id="email__password" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="email__password-confirmation">确认密码</label>
+                        <input type="password" class="form-control" id="email__password-confirmation" placeholder="Password Confirmation">
+                    </div>
+                    <button class="btn btn-primary btn-block btn-lg">保存</button>
+                </form>
+            </div>
+            <!-- user creation tab -->
+            <div class="main-body__tab tab">
+                <form role="form" class="form form__user-creation">
+                    <div class="form-group">
+                        <label for="user-creation__username">用户名</label>
+                        <input type="email" class="form-control" id="user-creation__username" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-creation__password">密码</label>
+                        <input type="password" class="form-control" id="user-creation__password" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-creation__password-confirmation">确认密码</label>
+                        <input type="password" class="form-control" id="user-creation__password-confirmation" placeholder="Password Confirmation">
+                    </div>
+                    <select class="form-control">
+                        <option value="">选择用户类别：</option>
+                        <option value="dispatcher">邮件分发员</option>
+                        <option value="handler">邮件处理员</option>
+                        <option value="assessor">邮件审核员</option>
+                    </select>
+                    <button class="btn btn-primary mt--lg btn-block btn-lg">保存</button>
+                    
+                </form>
+            </div>
+            <!-- user list -->
+            <div class="main-body__tab tab">
+                <div class="user-viewer">
+                    <div class="user-viewer__filter">
+                        <input type="text" class="user-viewer__filter-term" placeholder="搜索用户">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- scripts -->
+        <script src="/dist/scripts/root-manage.min.js"></script>
+    </body>
+</html>

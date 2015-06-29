@@ -14,8 +14,7 @@ var config = {
     },
     scripts: {
         root: 'scripts',
-        scriptFiles: 'scripts/**/*.js',
-        jsDir: 'scripts',
+        files: 'scripts/**/*.js',
         distDir: 'dist/scripts'
     },
     test: {
@@ -27,7 +26,7 @@ var config = {
 
     },
     connect: {
-        root: '/',
+        root: './',
         port: '8889',
         livereload: true
     }
@@ -53,7 +52,7 @@ gulp.task('styles', function() {
 
 // js -> .min
 gulp.task('scripts', function() {
-    return gulp.src(config.scripts.scriptFiles)
+    return gulp.src(config.scripts.files)
         .pipe(gulp.dest(config.scripts.distDir))
         .pipe(plugins.rename({
             suffix: '.min'
@@ -77,7 +76,7 @@ gulp.task('connect', function() {
 gulp.task('watch', function() {
     plugins.livereload.listen();
     gulp.watch(config.styles.sassFiles, ['styles']);
-    gulp.watch(config.scripts.scriptFiles, ['scripts']);
+    gulp.watch(config.scripts.files, ['scripts']);
 });
 
 gulp.task('dev', ['connect', 'watch']);

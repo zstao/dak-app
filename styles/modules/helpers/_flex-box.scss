@@ -73,29 +73,32 @@
     }
     
     // align-content
-    &-cx-content-start {
+    &-cx-content--start {
         @include align-content(flex-start);
     }
-    &-cx-content-end {
+    &-cx-content--end {
         @include align-content(flex-end);
     }
-    &-cx-content-center {
+    &-cx-content--center {
         @include align-content(center);
     }
-    &-cx-content-between {
+    &-cx-content--between {
         @include align-content(space-between);
     }
-    &-cx-content-around {
+    &-cx-content--around {
         @include align-content(space-around);
     }
-    &-cx-content-stretch {
+    &-cx-content--stretch {
         @include align-content(stretch);
+    }
+    &-item-self-align--end {
+        @include align-self(flex-end);
     }
 }
 
 // flex: n
 @for $i from 0 through 10{
-    .flex-#{$i}{
+    .flex--#{$i}{
         @include flex($i);
     }
 }

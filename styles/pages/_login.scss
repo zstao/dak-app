@@ -1,14 +1,44 @@
 body {
+    padding-top: 50px;
 }
+
 .login-form {
-  width: $login-form_width;
-  margin: 120px auto;
-  max-height: 100%;
-  max-width: 100%;
+    width: $login-form_width;
+    margin: 120px auto;
+    max-height: 100%;
+    max-width: 100%;
+    input.form-control {
+        border-color: white;
+        color: white;
+        background-color: transparent;
+        &::-webkit-input-placeholder {
+            color: white;
+        }
+        &:-moz-placeholder {
+            color: white;
+        }
+        &::-moz-placeholder {
+            color: white;
+        }
+        &::-ms-input-placeholder {
+            color: white;
+        }
+    }
+    .input-group-addon {
+        color: $bootstrap-primary;
+        background-color: white;
+    }
 }
-.login__welcome-text {
+
+.login__welcome {
     @extend .ptb--extra;
+    width: 80%;
+    border-bottom: 1px dashed white;
 }
+
 .login-error {
-  display: none;
+    display: none;
+}
+
+.login-btn {
 }
