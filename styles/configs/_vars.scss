@@ -12,5 +12,9 @@ $login-form_width:                                            460px !default;
 
 $action-bar_height:                                           80px !default;
 
+$user-viewer__type-switcher_height:                           40px !default;
+$user-viewer__filter_height:                                  40px !default;
+$user-viewer__pagination_height:                              60px !default;
+$user-viewer__holder_height:                                  calc(100% - #{$user-viewer__type-switcher_height} - #{$user-viewer__filter_height} - #{$user-viewer__pagination_height}) !default;
 
 // components

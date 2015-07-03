@@ -690,3 +690,9 @@ body {
 .login-error {
   display: none; }
 
+.login-btn {
+  background-color: #3770a0; }
+  .login-btn[disabled], .login-btn[disabled]:hover {
+    pointer-events: auto;
+    background-color: #3770a0;
+    cursor: not-allowed; }

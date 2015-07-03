@@ -36,6 +36,8 @@
     @extend .pt--extra;
     @extend .plr;
     &__tab {
+        @extend .row--full;
+        @extend .column--full;
         display: none;
         &.main-body__tab--active {
             @extend .flex--column;
@@ -44,11 +46,21 @@
 }
 .form {
     width: 460px;
+    &__error {
+        display: none;
+    }
 }
 .user-viewer {
-    width: 460px;
+    width: 80%;
+    @extend .column--full;
+    @extend .flex--nowrap;
+    @extend .rel;
+    &__type-switcher {
+        height: $user-viewer__type-switcher_height;
+    }
     &__filter {
         @extend .row--full;
+        height: $user-viewer__filter_height;
         &-term {
             @extend .row--full;
             @extend .input;
@@ -57,4 +69,32 @@
             @extend .input--light;
         }
     }
+    &__holder {
+        height: $user-viewer__holder_height;
+        @extend .box--auto;
+    }
+    &__pagivation {
+        height: $user-viewer__pagination_height;
+        line-height: $user-viewer__pagination_height;
+        .pagination {
+            @extend .mtb--0;
+        }
+    }
+    .user {
+        @extend .ptb--lg;
+        @extend .plr--lg;
+        @extend .mtb;
+        background-color: $bootstrap-primary;
+        border-radius: 4px;
+        color: white;
+    }
+}
+.loader-indicator {
+    @extend .abs;
+    @extend .abs--top;
+    @extend .abs--left;
+    @extend .row--full;
+    @extend .column--full;
+    padding-top: 200px;
+    color: $bootstrap-primary;
 }

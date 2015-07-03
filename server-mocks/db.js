@@ -1,15 +1,32 @@
 'use strict';
 module.exports = function() {
     var users = [];
-    var userCount = 20;
-    while (userCount--) {
+    var sessions = [];
+    var email;
+    var count = 5;
+    while (count--) {
         users.push({
-            id: userCount,
-            username: 'jl' + userCount,
-            password: '123456' + userCount
+            id: count,
+            username: 'jl' + count,
+            password: '123456' + count
+        });
+        sessions.push({
+            id: count,
+            username: 'session' + count,
+            password: '123456' + count,
+            to: 'hi'
         });
     }
+
+    email = {
+        id: '1',
+        address: '22@dd.com',
+        password: 'pwd',
+        passwordConfirmation: 'pwd'
+    };
     return {
-        users: users
+        users: users,
+        sessions: sessions,
+        email: email
     };
 };

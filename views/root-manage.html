@@ -6,6 +6,7 @@
         <link rel="shortcut icon" href="/statics/images/favicon.ico">
         <link rel="stylesheet" href="/bower_components/normalize.css/normalize.css">
         <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.min.css"/>
         <link rel="stylesheet" href="/dist/styles/root-manage.min.css">
     </head>
     <body>
@@ -38,7 +39,8 @@
                         <label for="email__password-confirmation">确认密码</label>
                         <input type="password" class="form-control" id="email__password-confirmation" placeholder="Password Confirmation">
                     </div>
-                    <button class="btn btn-primary btn-block btn-lg">保存</button>
+                    <h5 class="form__error alert alert-danger mt mb--lg"></h5>
+                    <input type="submit" value="保存" class="email__conf-save-btn btn btn-primary btn-lg btn-block" />
                 </form>
             </div>
             <!-- user creation tab -->
@@ -46,7 +48,7 @@
                 <form role="form" class="form form__user-creation">
                     <div class="form-group">
                         <label for="user-creation__username">用户名</label>
-                        <input type="email" class="form-control" id="user-creation__username" placeholder="Username">
+                        <input type="text" class="form-control" id="user-creation__username" placeholder="Username">
                     </div>
                     <div class="form-group">
                         <label for="user-creation__password">密码</label>
@@ -56,25 +58,57 @@
                         <label for="user-creation__password-confirmation">确认密码</label>
                         <input type="password" class="form-control" id="user-creation__password-confirmation" placeholder="Password Confirmation">
                     </div>
-                    <select class="form-control">
+                    <select class="form-control mb--lg" id="user-creation__type">
                         <option value="">选择用户类别：</option>
                         <option value="dispatcher">邮件分发员</option>
                         <option value="handler">邮件处理员</option>
                         <option value="assessor">邮件审核员</option>
                     </select>
-                    <button class="btn btn-primary mt--lg btn-block btn-lg">保存</button>
-                    
+                    <h5 class="form__error alert alert-danger mt mb--lg"></h5>
+                    <input type="submit" value="保存" class="user-creation__confirm-btn btn btn-primary btn-lg btn-block" />
+
                 </form>
             </div>
             <!-- user list -->
             <div class="main-body__tab tab">
-                <div class="user-viewer">
+                <div class="user-viewer text--center">
+                    <div class="user-viewer__type-switcher btn-group">
+                        <button class="btn user-viewer__type btn-primary plr--extra active" data-type="dispatcher">分发员</button>
+                        <button class="btn user-viewer__type btn-primary plr--extra" data-type="handler">处理员</button>
+                        <button class="btn user-viewer__type btn-primary plr--extra" data-type="assessor">审查员</button>
+                    </div>
                     <div class="user-viewer__filter">
                         <input type="text" class="user-viewer__filter-term" placeholder="搜索用户">
                     </div>
-                    <div class="user-viewer__list">
-                        
+                    <div class="user-viewer__holder">
+                        <div class="table-responsive">
+                            <table class="table table--bordered">
+                                <div class="user-viewer__list active">
+
+                                </div>
+                                <div class="user-viewer__list">
+
+                                </div>
+                                <div class="user-viewer__list">
+
+                                </div>
+                            </table>
+                        </div>
                     </div>
+                    <div class="row--full text--center column--full loader-indicator">
+                        <i class="fa fa-spinner fa-pulse fa-3x"></i>
+                    </div>
+                    <nav class="user-viewer__pagivation">
+                        <ul class="pagination">
+                            <li><a href="#"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li><a href="#"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>

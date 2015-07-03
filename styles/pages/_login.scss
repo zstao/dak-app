@@ -41,4 +41,10 @@ body {
 }
 
 .login-btn {
+    background-color: shade($bootstrap-primary, 20%);
+    &[disabled], &[disabled]:hover{
+        pointer-events: auto;
+        background-color: shade($bootstrap-primary, 20%);
+        cursor: not-allowed;
+    }
 }
