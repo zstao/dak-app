@@ -44,10 +44,12 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
     var $userPwdConfirmation = $('#user-creation__password-confirmation');
     var $userType = $('#user-creation__type');
 
-    var $userViewerTypeSwitcher = $('.user-viewer__type-switcher');
+    var $userViewerTypeSwitcherHolder = $('.user-viewer__type-switcher-holder');
+    var $userViewerTypeSwitchers = $userViewerTypeSwitcherHolder.children();
+    var $userViewerLists = $('.user-viewer__list');
     var $userViewerHolder = $('.user-viewer__holder');
     var $loaderIndicator = $('.loader-indicator');
-    var $currentUserType = $('.user-viewer__type.active');
+    var $currentUserType = $('.user-viewer__type-switcher.active');
     var $currentUsersList = $('.user-viewer__list.active');
 
     var ERR_EMAIL_INVALID = '邮箱非法';
@@ -72,13 +74,21 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
         $user.append($('<span>').text(user.username));
         return $user;
     }
-    function createUserList(users) {
+    function addUsersToList(users) {
         var $user;
         console.log(users);
         for (var i = 0, len = users.length; i < len; i++) {
             $user = createUserDom(users[i]);
-            $userViewerList.append($user);
+            $currentUsersList.append($user);
         }
+    }
+    function switchUserViewer(index) {
+        $currentUserType.removeClass('active');
+        $currentUsersList.removeClass('active');
+        $currentUserType = $userViewerTypeSwitchers.eq(index);
+        $currentUsersList = $userViewerLists.eq(index);
+        $currentUserType.addClass('active');
+        $currentUsersList.addClass('active');
     }
 
     function getEmailConf() {
@@ -157,11 +167,13 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
         console.log(account);
     });
 
-    $userViewerTypeSwitcher.on('click', '.user-viewer__type', function(e) {
+    $userViewerTypeSwitcherHolder.on('click', '.user-viewer__type-switcher', function(e) {
         var $type = $(e.target);
-        console.log($currentUserType);
-        console.log($currentUsersList);
-        console.log($type);
+        var index = $type.index();
+        if (index !== $currentUserType.index()) {
+            switchUserViewer(index)
+        }
+
     });
 
 
@@ -177,7 +189,7 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
     userStore.getUsers()
         .then(function(users) {
             $loaderIndicator.fadeOut(500, function(){
-                createUserList(users.data);
+                addUsersToList(users.data);
             });
         }, function(err) {
             console.log(err);

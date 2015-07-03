@@ -708,6 +708,10 @@ html body input[disabled] {
     height: 40px; }
   .user-viewer__holder {
     height: calc(100% - 40px - 40px - 60px); }
+  .user-viewer__list {
+    display: none; }
+  .user-viewer .user-viewer__list.active {
+    display: block; }
   .user-viewer__pagivation {
     height: 60px;
     line-height: 60px; }

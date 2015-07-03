@@ -55,7 +55,7 @@
     @extend .column--full;
     @extend .flex--nowrap;
     @extend .rel;
-    &__type-switcher {
+    &__type-switcher-holder {
         height: $user-viewer__type-switcher_height;
     }
     &__filter {
@@ -73,6 +73,13 @@
         height: $user-viewer__holder_height;
         @extend .box--auto;
     }
+    &__list {
+        display: none;
+    }
+    .user-viewer__list.active {
+        display: block;
+    }
+
     &__pagivation {
         height: $user-viewer__pagination_height;
         line-height: $user-viewer__pagination_height;
