@@ -70,7 +70,13 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
 
     function createUserDom(user) {
         var $user = $('<div>');
+        var $avatar = $('<img>');
+
         $user.addClass('user');
+        $avatar.addClass('img-circle user__avatar');
+
+        $avatar.attr('src', user.avatar);
+        $user.append($avatar);
         $user.append($('<span>').text(user.username));
         return $user;
     }

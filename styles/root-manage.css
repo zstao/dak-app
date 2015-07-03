@@ -548,7 +548,7 @@
 .pr--lg, .plr--lg, .user-viewer .user {
   padding-right: 12px; }
 
-.mr--lg, .mlr--lg {
+.mr--lg, .mlr--lg, .user-viewer .user__avatar {
   margin-right: 12px; }
 
 .pt--lg, .ptb--lg, .user-viewer .user {
@@ -593,7 +593,7 @@
 .text--right {
   text-align: right; }
 
-.text--left {
+.text--left, .user-viewer .user {
   text-align: left; }
 
 .box-x--auto, .box--auto, .main-body, .user-viewer__holder {
@@ -702,7 +702,7 @@ html body input[disabled] {
 
 .user-viewer {
   width: 80%; }
-  .user-viewer__type-switcher {
+  .user-viewer__type-switcher-holder {
     height: 40px; }
   .user-viewer__filter {
     height: 40px; }

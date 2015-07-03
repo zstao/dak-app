@@ -91,9 +91,13 @@
         @extend .ptb--lg;
         @extend .plr--lg;
         @extend .mtb;
+        @extend .text--left;
         background-color: $bootstrap-primary;
         border-radius: 4px;
         color: white;
+        &__avatar {
+            @extend .mr--lg;
+        }
     }
 }
 .loader-indicator {

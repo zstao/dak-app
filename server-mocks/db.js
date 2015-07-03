@@ -8,7 +8,8 @@ module.exports = function() {
         users.push({
             id: count,
             username: 'jl' + count,
-            password: '123456' + count
+            password: '123456' + count,
+            avatar: '/statics/images/default-avatar.png'
         });
         sessions.push({
             id: count,
