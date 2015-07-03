@@ -1,5 +1,14 @@
 'use strict';
-(function() {
+requirejs.config({
+    paths: {
+        axios: '/bower_components/axios/dist/axios.amd',
+        CONF: '/dist/scripts/config',
+        userStore: '/dist/scripts/components/user-store'
+    }
+});
+
+requirejs(['userStore'], function(userStore) {
+    console.log(userStore);
     var CLS = '.';
     var ACTIVE = '--active';
 
@@ -18,9 +27,17 @@
     var currentTabNav = $(CLS + TAB_NAV__ACTIVE);
     var currentTab = $(CLS + TAB__ACTIVE);
     var emailForm = $('.form__mail-conf');
+    var userViewerList = $('.user-viewer__list');
 
+
+    function createUserDom(user) {
+        var item = document.createElement('div');
+        item.innerText = user.username;
+        return item;
+    }
 
     tabNavsWrapper.addEventListener('click', function(e) {
+        e.preventDefault();
         var target = e.target;
         var targetIndex;
         if (!target.classList.contains(TAB_NAV__ACTIVE)) {
@@ -28,10 +45,18 @@
             if (currentTabNav) currentTabNav.classList.remove(TAB_NAV__ACTIVE);
             if (currentTab) currentTab.classList.remove(TAB__ACTIVE);
             currentTabNav = target;
-            currentTab = tabs[indexOf.call(tabNavsWrapper.children, target)];
+            targetIndex = indexOf.call(tabNavsWrapper.children, target);
+            currentTab = tabs[targetIndex];
             currentTab.classList.add(TAB__ACTIVE);
-        }
-        e.preventDefault();
-    });
 
-})();
+            if (targetIndex === 2) {
+                userStore.getUsers()
+                    .then(function(users) {
+                        console.log(users);
+                    }, function(err) {
+                        console.log(err);
+                    });
+            }
+        }
+    });
+});

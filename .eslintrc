@@ -6,8 +6,8 @@
     },
     "globals": {
         "axios": true,
-        "LANG": true,
-        "Ecpkn": true
+        "requirejs": true,
+        "Dak": true,
     },
     "rules": {
         "quotes": [1, "single"],

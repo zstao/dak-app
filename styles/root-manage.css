@@ -676,6 +676,7 @@ html body input[disabled] {
     .action-bar .tab-navs__item {
       text-decoration: none;
       margin-bottom: -1px;
+      margin-left: 2px;
       display: inline-block;
       padding: 8px 6px;
       border: 1px solid transparent;
