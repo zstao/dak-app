@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document</title>
+        <link rel="shortcut icon" href="/statics/images/favicon.ico">
+        <link rel="stylesheet" href="/bower_components/normalize.css/normalize.css">
+        <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.min.css"/>
+        <link rel="stylesheet" type="text/css" href="/statics/libs/simditor/dist/simditor.css" />
+        <link rel="stylesheet" href="/dist/styles/assessor.min.css">
+    </head>
+    <body>
+        <!-- action bar -->
+        <div class="action-bar">
+            <div class="v-card">
+                <img src="/statics/images/default-avatar.png" alt="" class="v-card__avatar img-circle cursor--pointer">
+                <span class="label label-primary">欢迎您</span>
+            </div>
+            <nav class="tab-navs">
+                <a href="" class="tab-navs__item tab-navs__item--active">邮件审核</a>
+                <a href="" class="tab-navs__item">个人设置</a>
+            </nav>
+        </div>
+        <!-- main content -->
+        <div class="main-body">
+            <!-- email dispatcher -->
+            <div class="main-body__tab tab main-body__tab--active">
+                <div class="dispatcher-viewer row--full column--full box--clip">
+                    <div class="dispatcher-viewer__email-table-holder row--full">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>发件人</th>
+                                    <th width="60%">主题</th>
+                                    <th>时间</th>
+                                </tr>
+                            </thead>
+                            <tbody class="email-rows">
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <nav class="dispatcher-viewer__email-table-pagination text--center">
+                        <ul class="pagination">
+                            <li>
+                                <a href="#" disabled aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li><a href="#">1</a></li>
+                            <li>
+                                <a href="#" disabled aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- setting tab -->
+            <div class="main-body__tab tab">
+                <form role="form" class="form form__user-creation">
+                    <div class="form-group">
+                        <label for="user-creation__username">用户名</label>
+                        <input type="text" class="form-control" id="user-creation__username" placeholder="Username">
+                    </div>
+                    <h5 class="form__error alert alert-danger mt mb--lg"></h5>
+                    <input type="submit" value="保存" class="user-creation__confirm-btn btn btn-primary btn-lg btn-block" />
+
+                </form>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal__email-viewer">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">邮件分发</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h3 class="modal__email-topic mt--0 flag"></h3>
+                        <div class="modal__email-metas">
+                            <h4>
+                                <span class="label label-primary modal__email-metas-label">发送者：</span>
+                                <span class="modal__email-sender"></span>
+                            </h4>
+                            <h4>
+                                <span class="label label-primary modal__email-metas-label">发送时间：</span>
+                                <span class="modal__email-send-at"></span>
+                            </h4>
+                        </div>
+                        <div class="plr--lg ptb--lg">
+                            <div class="modal__email-content">
+                            </div>
+                        </div>
+                        <div class="modal__email-dispatcher mt--extra row--full">
+                            <div class="meta-box plr ptb inline-block row--full">
+                                <span class="flag mtb">标签：</span>
+                                <div class="email__tags-holder">
+                                </div>
+                            </div>
+                            <div class="email__handler-editor-wrapper mt row--full">
+                                <textarea id="email-editor" placeholder="审核意见" autofocus class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default modal__cancel-btn" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger modal__confirm-btn">审核不通过</button>
+                        <button type="button" class="btn btn-primary modal__confirm-btn">确认通过审核</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row--full text--center column--full loader-indicator">
+            <i class="fa fa-spinner fa-pulse fa-3x"></i>
+        </div>
+
+
+        <script type="text/template" id="tpl__pagination">
+            <ul class="pagination">
+                <% for (var i = pageStart; i < pageEnd; i++) { %>
+                    <li>
+                        <a href="#" data-page="<%=i%>"
+                                <% if (i === currentPage) { %>
+                                     class="active"
+                                <% } %>
+                        ></a>
+                    </li>
+                <% } %>
+            </ul>
+        </script>
+        <script type="text/template" id="tpl__email">
+            <tr data-id="<%= id %>">
+                <td><%= sender %></td>
+                <td><%= topic %></td>
+                <td><%= data %></td>
+            </tr>
+        </script>
+        <script type="text/template" id="tpl__empty">
+            <div class="text--center empty-indicator column--full flex--column flex-mx--center">
+                <i class="fa fa-4x fa-life-ring"></i>
+                <h3>空空如也</h3>
+            </div>
+        </script>
+        <!-- scripts -->
+        <script src="/bower_components/requirejs/require.js" data-main="/dist/scripts/assessor"></script>
+    </body>
+</html>

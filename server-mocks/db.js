@@ -2,7 +2,7 @@
 module.exports = function() {
     var users = [];
     var sessions = [];
-    var email;
+    var emails = [];
     var count = 5;
     while (count--) {
         users.push({
@@ -17,17 +17,20 @@ module.exports = function() {
             password: '123456' + count,
             to: 'hi'
         });
+        emails.push({
+            id: count,
+            sender: 'zhengjianglong' + count,
+            content: (new Array(100)).join('邮件内容'),
+            topic: 'topic + ' + count,
+            data: new Date(),
+            status: 'undispatched',
+            tags: ['hello']
+        });
     }
 
-    email = {
-        id: '1',
-        address: '22@dd.com',
-        password: 'pwd',
-        passwordConfirmation: 'pwd'
-    };
     return {
         users: users,
         sessions: sessions,
-        email: email
+        emails: emails
     };
 };

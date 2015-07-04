@@ -80,7 +80,7 @@
         display: block;
     }
 
-    &__pagivation {
+    &__pagination {
         height: $user-viewer__pagination_height;
         line-height: $user-viewer__pagination_height;
         .pagination {
@@ -92,6 +92,7 @@
         @extend .plr--lg;
         @extend .mtb;
         @extend .text--left;
+        @extend .cursor--pointer;
         background-color: $bootstrap-primary;
         border-radius: 4px;
         color: white;
@@ -101,11 +102,27 @@
     }
 }
 .loader-indicator {
-    @extend .abs;
-    @extend .abs--top;
-    @extend .abs--left;
+    @extend .fixed;
+    @extend .fixed--top;
+    @extend .fixed--left;
     @extend .row--full;
     @extend .column--full;
     padding-top: 200px;
+    color: $bootstrap-primary;
+}
+.pager {
+    @extend .mtb--0;
+    li > a {
+        @extend .ptb;
+        @extend .plr--extra;
+        @extend .mlr--extra;
+        line-height: 1;
+        &[disabled]:hover {
+            background-color: white;
+        }
+    }
+}
+.empty-indicator {
+    min-height: 500px;
     color: $bootstrap-primary;
 }

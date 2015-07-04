@@ -7,7 +7,7 @@ define(['jquery'], function($) {
         width: '60%',
         top: '0',
         left: '20%',
-        'z-index': '100',
+        'z-index': '10000',
         display: 'none'
     });
     $('body').append($dom);

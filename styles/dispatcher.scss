@@ -1,0 +1,36 @@
+@charset 'utf-8';
+
+// import third-party libs
+@import 'configs/_imports';
+
+
+// app related configs
+@import 'configs/_colors';
+// default value of $vars for theming
+@import 'configs/_vars';
+
+
+// import utils
+@import 'utils/_mixins';
+@import 'utils/_placeholders';
+@import 'utils/_functions';
+
+
+
+// import modules
+@import 'modules/helpers/_size';
+@import 'modules/helpers/_flex-box';
+@import 'modules/helpers/_position';
+@import 'modules/helpers/_text';
+@import 'modules/helpers/_visibility';
+@import 'modules/helpers/_color';
+@import 'modules/_cursor';
+@import 'modules/_input';
+@import "modules/_flag";
+@import "modules/_meta";
+// base: tabs ...
+@import 'base/_base';
+
+// _admin-record 是管理中属于记录管理的页面的公共样式，不是具体的某个可视页面
+@import 'pages/_root-manage';
+@import "pages/_dispatcher";

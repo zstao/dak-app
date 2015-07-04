@@ -8,9 +8,9 @@
     var loginErrorEl = $('.login-error');
     var loginBtn = $('.login-btn');
 
-    var LOGIN_URL = 'http://localhost:3000/sessions';
+    var LOGIN_URL = 'http://localhost:6005/auth';
     var UN_PATTERN = /^\w[-\w]{4,20}$/;
-    var PW_PATTERN = /^\w[-\w]{6,20}$/;
+    var PW_PATTERN = /^\w[-\w]{5,20}$/;
 
     /////// login error handler
     function clearLoginError() {
@@ -69,7 +69,7 @@
         login(rawAccount)
             .then(function(res) {
                 credits = res && res.data || {};
-                if (!credits.id) {
+                if (!credits.to) {
                     clearSessionStorage();
                     setLoginError(credits.msg);
                 } else {

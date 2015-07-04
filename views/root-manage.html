@@ -98,20 +98,34 @@
                     <div class="row--full text--center column--full loader-indicator">
                         <i class="fa fa-spinner fa-pulse fa-3x"></i>
                     </div>
-                    <nav class="user-viewer__pagivation">
-                        <ul class="pagination">
-                            <li><a href="#"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
+                    <nav class="user-viewer__pagination text--center">
+                        <ul class="pager">
+                            <li><a href="#" disabled>上一页</a></li>
+                            <li><a href="#" disabled>下一页</a></li>
                         </ul>
                     </nav>
                 </div>
             </div>
         </div>
+        <script type="text/template" id="tpl__pagination">
+            <ul class="pagination">
+                <% for (var i = pageStart; i < pageEnd; i++) { %>
+                    <li>
+                        <a href="#" data-page="<%=i%>"
+                                <% if (i === currentPage) { %>
+                                     class="active"
+                                <% } %>
+                        ></a>
+                    </li>
+                <% } %>
+            </ul>
+        </script>
+        <script type="text/template" id="tpl__empty">
+            <div class="text--center empty-indicator column--full flex--column flex-mx--center">
+                <i class="fa fa-4x fa-life-ring"></i>
+                <h3>空空如也</h3>
+            </div>
+        </script>
         <!-- scripts -->
         <script src="/bower_components/requirejs/require.js" data-main="/dist/scripts/root-manage"></script>
     </body>

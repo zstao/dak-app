@@ -9,7 +9,8 @@ requirejs.config({
         bootstrap: '/bower_components/bootstrap/dist/js/bootstrap.min',
         toast: '/dist/scripts/components/toast',
         _: '/bower_components/lodash/lodash.min',
-        validator: '/bower_components/validator-js/validator.min'
+        validator: '/bower_components/validator-js/validator.min',
+        utils: '/dist/scripts/utils/utils'
     },
     shim: {
         bootstrap: {
@@ -46,6 +47,7 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
 
     var $userViewerTypeSwitcherHolder = $('.user-viewer__type-switcher-holder');
     var $userViewerTypeSwitchers = $userViewerTypeSwitcherHolder.children();
+    var $userViewer = $('.user-viewer');
     var $userViewerLists = $('.user-viewer__list');
     var $userViewerHolder = $('.user-viewer__holder');
     var $loaderIndicator = $('.loader-indicator');
@@ -57,6 +59,17 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
     var ERR_PWD_NOT_SAME = '确认密码不一致';
     var ERR_USERNAME_INVALID = '用户名有误';
     var ERR_USER_TYPE_NONE = '请选择用户类型';
+    var EMAIL_CONF = '邮箱配置';
+    var SUCCEED = '成功', FAILED = '失败';
+
+    var conf = {};
+
+    // tpls
+    var paginationTpl = $('#tpl__pagination').html();
+    var $emptyIndicator = $('#tpl__empty').html();
+    var compiledPaginationTpl = _.template(paginationTpl);
+
+
 
     function setFormError($form, msg) {
         var $el = $form.find('.form__error').eq(0);
@@ -80,12 +93,20 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
         $user.append($('<span>').text(user.username));
         return $user;
     }
-    function addUsersToList(users) {
-        var $user;
+    function addUsersToList(users, $list) {
+        var $user, len;
+        users = users || [];
+        len = users.length;
+        $list = $list || $currentUsersList;
         console.log(users);
-        for (var i = 0, len = users.length; i < len; i++) {
-            $user = createUserDom(users[i]);
-            $currentUsersList.append($user);
+        if (len > 0) {
+            for (var i = 0; i < len; i++) {
+                $user = createUserDom(users[i]);
+                $list.append($user);
+            }
+        } else {
+            console.log(len);
+            $list.append($emptyIndicator);
         }
     }
     function switchUserViewer(index) {
@@ -95,11 +116,31 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
         $currentUsersList = $userViewerLists.eq(index);
         $currentUserType.addClass('active');
         $currentUsersList.addClass('active');
+
+        if ($currentUsersList.children().length === 0) {
+            getUsers({role: $currentUserType.data('type')})
+                .then(function(data) {
+                    console.log(data);
+                    data = data.data && data.data.list;
+                    addUsersToList(data ,$currentUsersList);
+                }, function(err){
+                    console.log(err);
+                });
+        }
     }
 
     function getEmailConf() {
-        return axios.get(CONF.API.email.root);
+        return axios.get(CONF.API.conf.email);
     }
+    function getUsers(cond) {
+        $loaderIndicator.fadeIn(200);
+        return userStore.getUsers(cond)
+            .then(function(users) {
+                $loaderIndicator.fadeOut(300);
+                return users;
+            });
+    }
+
 
     // tab switcher
     $tabNavsWrapper.on('click', function(e) {
@@ -131,18 +172,22 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
         if (err) {
             setFormError($emailForm, err);
         } else {
-            credit.id = '1';
-            axios.put(CONF.API.email.root, credit)
+            axios.put(CONF.API.conf.email, _.merge({}, conf.email, credit))
                 .then(function(res) {
-                    console.log(res);
+                    res = res.data;
+                    if (res && res._id) {
+                        conf.email = _.merge({}, conf.email, res);
+                        Toast.show(EMAIL_CONF + SUCCEED);
+                    }
                 }, function(error) {
-                    console.log(error);
-
+                    Toast.show(EMAIL_CONF + FAILED);
                 });
         }
     });
-    $emailForm.on('input', function(e){
-        clearFormError($emailForm);
+    [$emailForm, $userCreationFrom].forEach(function($f) {
+        $f.on('input', function(e){
+            clearFormError($f);
+        });
     });
 
 
@@ -153,52 +198,50 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
             username: $username.val(),
             password: $userPwd.val(),
             passwordConfirmation: $userPwdConfirmation.val(),
-            type: $userType.val()
+            role: $userType.val()
         };
 
         var err = !account.username || account.username.length < 4 ? ERR_USERNAME_INVALID : undefined;
         err = err || (!account.password || account.password.length < 4 ? ERR_PWD_INVALID : undefined);
         err = err || (account.password !== account.passwordConfirmation ? ERR_PWD_NOT_SAME : undefined);
-        err = err || (!account.type ? ERR_USER_TYPE_NONE : undefined);
+        err = err || (!account.role ? ERR_USER_TYPE_NONE : undefined);
         if (err) {
             setFormError($userCreationFrom, err);
         } else {
             userStore.create(account)
-                .then(function(ur) {
+                .then(function(res) {
                     Toast.show('成功创建用户');
                 }, function(error) {
-
                 });
         }
-        console.log(account);
     });
 
-    $userViewerTypeSwitcherHolder.on('click', '.user-viewer__type-switcher', function(e) {
+    // user viewer type switcher
+    $userViewer.on('click', '.user-viewer__type-switcher', function(e) {
         var $type = $(e.target);
         var index = $type.index();
         if (index !== $currentUserType.index()) {
             switchUserViewer(index)
         }
-
+    });
+    // user viewer list pagination
+    $userViewer.on('click', '', function(e) {
+        e.preventDefault();
     });
 
 
     // init show email conf
     getEmailConf()
         .then(function(email) {
-            email = email.data;
+            email = email.data[0];
             if (email && email.address) {
+                conf.email = email;
                 $emailAddr.val(email.address);
             }
         });
-
-    userStore.getUsers()
-        .then(function(users) {
-            $loaderIndicator.fadeOut(500, function(){
-                addUsersToList(users.data);
-            });
-        }, function(err) {
-            console.log(err);
+    getUsers({role: 'dispatcher'})
+        .then(function(res) {
+            addUsersToList(res.data && res.data.list);
         });
 
 });

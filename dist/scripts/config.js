@@ -2,17 +2,20 @@
 define(function() {
     var CONF = {};
     var API = CONF.API = {};
-    var root = API.root = {};
-    var email = API.email = {};
+
+    var conf = API.conf = {};
     var user = API.user = {};
+    var email = API.email = {};
 
-    var API_ROOT = 'http://localhost:3000';
+    var API_ROOT = 'http://localhost:6005';
+    var MOCK_ROOT = 'http://localhost:3000';
 
-    root.root = API_ROOT;
-    root.user = root.root + '/users';
+    conf.root = API_ROOT + '/configs';
+    conf.email = conf.root + '?type=EMAIL';
 
-    email.root = API_ROOT + '/email';
+    user.root = API_ROOT + '/accounts';
+    user.pageCount = user.root + '/pages';
 
-    user.root = API_ROOT + '/users';
+    email.root = MOCK_ROOT + '/emails';
     return CONF;
 });

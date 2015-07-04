@@ -653,11 +653,14 @@ pre > code {
 * {
   box-sizing: border-box; }
 
-html body input[disabled] {
+html body input[disabled], [disabled] {
   cursor: not-allowed; }
 
 .label {
   vertical-align: top; }
+
+.label {
+  vertical-align: middle; }
 
 body {
   padding-top: 50px; }

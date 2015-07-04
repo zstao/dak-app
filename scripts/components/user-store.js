@@ -1,14 +1,17 @@
 'use strict';
-define(['CONF', 'axios'], function(CONF, axios) {
-    var userSotre = {};
+define(['CONF', 'axios', '_', 'utils'], function(CONF, axios, _, Utils) {
+    var userStore = {};
     var API = CONF.API.user;
-    console.log(API);
 
-    userSotre.getUsers = function() {
-        return axios.get(API.root);
+    userStore.getUsers = function(cond) {
+        return axios.get(Utils.appendQueries(API.root, cond));
     };
-    userSotre.create = function(account) {
+    userStore.create = function(account) {
          return axios.post(API.root, account);
     };
-    return userSotre;
+
+    userStore.getPageCount = function(cond) {
+        return axios.get(Utils.appendQueries(API.pageCount, cond));
+    };
+    return userStore;
 });

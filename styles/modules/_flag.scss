@@ -1,0 +1,5 @@
+.flag {
+  border-left: 3px solid $bootstrap-primary;
+  @extend .pl--lg;
+  @extend .ptb;
+}

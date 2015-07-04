@@ -1,0 +1,18 @@
+#email-editor {
+}
+.simditor {
+  min-width: 100% !important;
+}
+.simditor-toolbar {
+  min-width: 800px !important;
+}
+#email-creator {
+  &-wrapper {
+    width: 100%;
+  }
+  &__receiver-address {
+    width: 100%;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
