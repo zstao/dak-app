@@ -131,6 +131,7 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
         $_tbd.fadeOut(100);
         $tbd.fadeIn(100);
         console.log(emails);
+	 $emptyIndicator.fadeOut(100);
         if (emails != undefined) {
             if (emails.count > 0) {
                 emails = emails.mailList;
@@ -143,7 +144,15 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
                 $emptyIndicator.fadeIn(500);
                 $viewerEmailTableHolder.append($emptyIndicator);
             }
-        }
+        } else {
+	   
+	}
+	if ($tbd.children().length > 0) {
+	    $emptyIndicator.fadeOut(100);
+	  } else {
+	    $emptyIndicator.fadeIn(100);
+	  }
+        
     }
 
     function setCurrentEmail($dom, email) {
