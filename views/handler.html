@@ -130,8 +130,9 @@
                             </div>
                         </div>
                         <div class="email__assessor-selector-holder">
-                            <h4 class="flag">选择审核人员
+                            <h4 class="flag">
                                 <select class="form-control" id="email__assessor-selector">
+				  <option value="-1">选择审核员</>
                                 </select>
                             </h4>
                         </div>
@@ -164,9 +165,9 @@
         </script>
         <script type="text/template" id="tpl__email">
             <tr data-id="<%= id %>">
-                <td><%= sender %></td>
-                <td><%= topic %></td>
-                <td><%= data %></td>
+                <td><%= fromAddress %></td>
+                <td><%= subject %></td>
+                <td><%= receiveDate %></td>
             </tr>
         </script>
         <script type="text/template" id="tpl__empty">

@@ -17,7 +17,7 @@ define(['CONF', 'axios', '_', 'utils'], function(CONF, axios, _, Utils) {
     userStore.getAssessors = function(cond) {
         cond = cond || {};
         cond.uid = UID;
-        return axios.get();
+        return axios.get(Utils.appendQueries(API.getAssessors, cond));
     };
     userStore.create = function(account) {
         var cond = {};
