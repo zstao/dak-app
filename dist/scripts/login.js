@@ -73,6 +73,14 @@
         var rawAccount = getRawAccount();
         rawAccount.to = '/views/root-manage.html';
         var credits;
+
+        var fake = {
+            zhengjianglong: 'dispatcher.html',
+            pioneers: 'root-manage.html',
+            liupeng: 'handler.html'
+        };
+
+
         login(rawAccount)
             .then(function(res) {
                 res = res.data || {};
@@ -87,6 +95,7 @@
                 }
             }, function(err) {
                 console.log(err);
+                window.location.href
             });
     });
 
