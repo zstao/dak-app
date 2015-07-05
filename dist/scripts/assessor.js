@@ -115,7 +115,7 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
     }
 
     // tab switcher
-    $tabNavsWrapper.on('click', function(e) {
+    $tabNavsWrapper.on('click', '.tab-navs__item', function(e) {
         e.preventDefault();
         var $target = $(e.target);
         var targetIndex;

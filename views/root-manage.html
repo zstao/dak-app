@@ -32,6 +32,10 @@
                         <input type="email" class="form-control" id="email__address" placeholder="Enter email">
                     </div>
                     <div class="form-group">
+                        <label for="email__imap-address">邮箱IMAP地址</label>
+                        <input type="text" class="form-control" id="email__imap-address" placeholder="Enter email IMAP address">
+                    </div>
+                    <div class="form-group">
                         <label for="email__password">邮箱密码</label>
                         <input type="password" class="form-control" id="email__password" placeholder="Password">
                     </div>
@@ -107,6 +111,7 @@
                 </div>
             </div>
         </div>
+        <a href="./" class="fixed fixed--left ptb--lg plr--lg fixed--bottom fa fa-sign-out" style="font-size: 1.6em;"></a>
         <script type="text/template" id="tpl__pagination">
             <ul class="pagination">
                 <% for (var i = pageStart; i < pageEnd; i++) { %>

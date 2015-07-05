@@ -25,7 +25,11 @@
         <div class="main-body">
             <!-- email dispatcher -->
             <div class="main-body__tab tab main-body__tab--active">
-                <div class="dispatcher-viewer row--full column--full box--clip">
+                <div class="dispatcher-viewer row--full column--full box--clip text--center">
+                    <div class="dispatcher-viewer__type-switcher-holder btn-group inline-block">
+                        <button class="btn dispatcher-viewer__type-switcher btn-primary plr--extra active" data-type="dispatched">待分发邮件</button>
+                        <button class="btn dispatcher-viewer__type-switcher btn-primary plr--extra" data-type="undispatched">已分发邮件</button>
+                    </div>
                     <div class="dispatcher-viewer__email-table-holder row--full">
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -35,14 +39,10 @@
                                     <th>时间</th>
                                 </tr>
                             </thead>
-                            <tbody class="email-rows">
-
-                            </tbody>
+                            <tbody class="email-rows dispatcher-viewer__un-dispatched-table-body"></tbody>
+                            <tbody class="email-rows dispatcher-viewer__dispatched-table-body"></tbody>
 
                         </table>
-                    </div>
-                    <div class="row--full text--center column--full loader-indicator">
-                        <i class="fa fa-spinner fa-pulse fa-3x"></i>
                     </div>
                     <nav class="dispatcher-viewer__email-table-pagination text--center">
                         <ul class="pagination">
@@ -63,27 +63,21 @@
             </div>
             <!-- setting tab -->
             <div class="main-body__tab tab">
-                <form role="form" class="form form__user-creation">
+                <form role="form" class="form form__user-setting">
                     <div class="form-group">
-                        <label for="user-creation__username">用户名</label>
-                        <input type="text" class="form-control" id="user-creation__username" placeholder="Username">
+                        <label for="user-setting__username">用户名</label>
+                        <input type="text" class="form-control" id="user-setting__username" placeholder="Username">
                     </div>
                     <div class="form-group">
-                        <label for="user-creation__password">密码</label>
-                        <input type="password" class="form-control" id="user-creation__password" placeholder="Password">
+                        <label for="user-setting__password">修改密码?</label>
+                        <input type="password" class="form-control" id="user-setting__password" placeholder="Enter New Password">
                     </div>
                     <div class="form-group">
-                        <label for="user-creation__password-confirmation">确认密码</label>
-                        <input type="password" class="form-control" id="user-creation__password-confirmation" placeholder="Password Confirmation">
+                        <label for="user-setting__password-confirmation">确认新密码</label>
+                        <input type="password" class="form-control" id="user-setting__password-confirmation" placeholder="New Password Confirmation">
                     </div>
-                    <select class="form-control mb--lg" id="user-creation__type">
-                        <option value="">选择用户类别：</option>
-                        <option value="dispatcher">邮件分发员</option>
-                        <option value="handler">邮件处理员</option>
-                        <option value="assessor">邮件审核员</option>
-                    </select>
                     <h5 class="form__error alert alert-danger mt mb--lg"></h5>
-                    <input type="submit" value="保存" class="user-creation__confirm-btn btn btn-primary btn-lg btn-block" />
+                    <input type="submit" value="保存" class="user-setting__confirm-btn btn btn-primary btn-lg btn-block" />
 
                 </form>
             </div>
@@ -105,7 +99,7 @@
                             </h4>
                             <h4>
                                 <span class="label label-primary modal__email-metas-label">发送时间：</span>
-                                <span class="modal__email-send-at"></span>
+                                <span class="modal__email-sent-at"></span>
                             </h4>
                         </div>
                         <div class="plr--lg ptb--lg">
@@ -125,8 +119,9 @@
                                 </form>
                             </div>
                             <div class="email__handler-selector-holder">
-                                <h4 class="flag">选择处理人员
+                                <h4 class="flag">
                                     <select class="form-control" id="email__handler-selector">
+                                        <option value="-1">选择处理人员</option>
                                     </select>
                                 </h4>
                             </div>
@@ -139,7 +134,10 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-
+        <div class="row--full text--center column--full loader-indicator">
+            <i class="fa fa-spinner fa-pulse fa-3x"></i>
+        </div>
+        <a href="./" class="fixed fixed--left ptb--lg plr--lg fixed--bottom fa fa-sign-out" style="font-size: 1.6em;"></a>
 
         <script type="text/template" id="tpl__pagination">
             <ul class="pagination">
@@ -156,9 +154,9 @@
         </script>
         <script type="text/template" id="tpl__email">
             <tr data-id="<%= id %>">
-                <td><%= sender %></td>
-                <td><%= topic %></td>
-                <td><%= data %></td>
+                <td><%= fromAddress %></td>
+                <td><%= subject %></td>
+                <td><%= receiveDate %></td>
             </tr>
         </script>
         <script type="text/template" id="tpl__empty">

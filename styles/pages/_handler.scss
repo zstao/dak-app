@@ -16,3 +16,19 @@
     border-bottom-right-radius: 0;
   }
 }
+.handler-viewer {
+  width: 80%;
+  &__type-switcher-holder {
+    @extend .user-viewer__type-switcher-holder;
+  }
+  &__email-table-holder {
+    height: $dispatcher-viewer__email-table-holder_height;
+  }
+  &__email-table-pagination {
+    height: $dispatcher-viewer__email-table-pagination_height;
+  }
+  tr {
+    @extend .cursor--pointer;
+
+  }
+}

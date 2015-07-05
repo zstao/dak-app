@@ -734,4 +734,5 @@ html body input[disabled], [disabled] {
 
 .empty-indicator {
   min-height: 500px;
+  padding-top: 100px;
   color: #458cc8; }

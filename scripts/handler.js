@@ -32,6 +32,10 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
     var TAB_NAV = 'tab-navs__item';
     var TAB = 'main-body__tab';
 
+    var HANDLED = 'handled';
+    var UN_HANDLED = 'unhandled';
+    var SHOWN = 'show', HIDEN = 'hide';
+
     var TAB__ACTIVE = TAB + ACTIVE;
     var TAB_NAV__ACTIVE = TAB_NAV + ACTIVE;
 
@@ -41,27 +45,40 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
     var $currentTab = $(CLS + TAB__ACTIVE);
 
     var $loaderIndicator = $('.loader-indicator');
+    var $handlerViewerTypeSwitcher = $('.handler-viewer__type-switcher-holder');
+    var $currentViewerSwitcher = $('.handler-viewer__type-switcher.active');
 
     var $emailTableBody = $('.email-rows');
+    var $unHandledEmailTableBody = $('.handler-viewer__un-handled-table-body');
+    var $handledEmailTableBody = $('.handler-viewer__handled-table-body');
+    var isHandledTableDirty = true, isUnHandledTableDirty = true;
 
-    var SUCCEED = '成功', FAILED = '失败';
+    var HANDL_TEXT = '分发';
+    var SUCCEED = '成功', FAILED = '失败', INVALID = '不合法', NONE = '为空';
+    var ERR_ASSESSOR_NONE = '处理人员' + NONE;
 
     var conf = {};
 
     var $compiledEmailTpl = _.template($('#tpl__email').html());
+    var $viewerEmailTableHolder = $('.handler-viewer__email-table-holder');
+    var $emptyIndicator = $($('#tpl__empty').html());
 
     var $emailViewerModal = $('#modal__email-viewer');
 
     var $emailTopic = $('.modal__email-topic');
     var $emailSender = $('.modal__email-sender');
     var $emailContent = $('.modal__email-content');
+    var $emailSentAt = $('.modal__email-sent-at');
 
     var $emailTagsHolder = $('.email__tags-holder');
+    var $emailAssessorSelector = $('#email__assessor-selector');
 
     var $modalConfirmBtn = $('.modal__confirm-btn');
 
     var $currentEmailTr;
     var currentEmail;
+
+    var emailAssessors = [];
 
     var $emailHandlerEditorWrapper = $('.email__handler-editor-wrapper');
     var $emailCreatorWrapper = $('#email-creator-wrapper');
@@ -71,32 +88,66 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
     },20);
     window.editor = editor;
 
-    function getEmails(cond) {
-        $loaderIndicator.fadeIn(200);
-        return emailStore.getEmails(cond)
-            .then(function(users) {
-                $loaderIndicator.fadeOut(300);
-                return users;
-            });
+
+
+
+
+    function switchHandlerViewerType($switcher) {
+        var index = $switcher.index();
+        if (index !== $currentViewerSwitcher.index()) {
+            $currentViewerSwitcher.removeClass('active');
+            $currentViewerSwitcher = $switcher;
+            $currentViewerSwitcher.addClass('active');
+            if (index === 0 && isUnHandledTableDirty) {
+                getEmails({}, UN_HANDLED)
+                    .then(function(res) {
+                        clearEmailTableBody(UN_HANDLED);
+                        setEmailTableBody(res.data, UN_HANDLED);
+                        isUnHandledTableDirty = false;
+                    });
+            } else if (isHandledTableDirty){
+                getEmails({}, HANDLED)
+                    .then(function(res) {
+                        clearEmailTableBody(HANDLED);
+                        setEmailTableBody(res.data, HANDLED);
+                        isHandledTableDirty = false;
+                    });
+            }
+        }
     }
 
-    function fillPage(emails) {
-        var emailRow, emailRows = [];
-        emails = emails || [];
-        console.log(emails);
-        emails.forEach(function(email) {
-            emailRow = $compiledEmailTpl(email);
-            emailRows.push(emailRow)
-            $emailTableBody.append($(emailRow));
-        });
+    function clearEmailTableBody(tbdStatus) {
+        var $tbd = tbdStatus === UN_HANDLED ? $unHandledEmailTableBody : $handledEmailTableBody;
+        $tbd.empty();
     }
+    function setEmailTableBody(emails, tbdStatus) {
+        var $tbd = tbdStatus === UN_HANDLED ? $unHandledEmailTableBody : $handledEmailTableBody;
+        var $_tbd = tbdStatus !== UN_HANDLED ? $unHandledEmailTableBody : $handledEmailTableBody;
+        var emailRow, emailRows = [];
+        $_tbd.fadeOut(100);
+        console.log(emails);
+        emails = emails.count > 0 ? emails.mailList : [];
+        if (emails.length > 0) {
+            emails.forEach(function(email) {
+                emailRow = $compiledEmailTpl(email);
+                emailRows.push(emailRow);
+                $tbd.append($(emailRow));
+            });
+        } else {
+            $emptyIndicator.fadeIn(500);
+            $viewerEmailTableHolder.append($emptyIndicator);
+        }
+    }
+
     function setCurrentEmail($dom, email) {
+        email.tags = email.tags ? email.tags.split('|') : [];
         $currentEmailTr = $dom;
         currentEmail = email;
 
-        $emailTopic.html(email.topic);
-        $emailSender.html(email.sender);
-        $emailContent.html(email.content);
+        $emailTopic.html(email.subject);
+        $emailSender.html(email.fromAddress);
+        $emailContent.html(email.body);
+        $emailSentAt.html(email.receiveDate);
         $emailTagsHolder.empty();
         if (email.tags && email.tags.length > 0) {
             email.tags.forEach(function(tag){
@@ -104,6 +155,19 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
             });
         }
     }
+
+
+
+    function getEmails(cond, status) {
+        $emptyIndicator.detach();
+        $loaderIndicator.fadeIn(200);
+        return emailStore.getEmails(cond, status)
+            .then(function(users) {
+                $loaderIndicator.fadeOut(300);
+                return users;
+            });
+    }
+
     function addEmailTag(tag) {
         var $tag = $('<div>');
         var $tagTxt = $('<span>');
@@ -117,7 +181,7 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
     }
 
     // tab switcher
-    $tabNavsWrapper.on('click', function(e) {
+    $tabNavsWrapper.on('click', '.tab-navs__item', function(e) {
         e.preventDefault();
         var $target = $(e.target);
         var targetIndex;
@@ -138,22 +202,77 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
     $emailTableBody.on('click', 'tr', function(e) {
         var $tr = $(e.currentTarget);
         $loaderIndicator.fadeIn(200);
-        emailStore.getEmail($tr.data('id'))
+        emailStore.getEmail({id: $tr.data('id')})
             .then(function(email) {
                 email = email.data;
+                console.log(email);
+                $emailViewerModal.modal(SHOWN);
                 setCurrentEmail($tr, email);
-                $emailViewerModal.modal();
-                $emailHandlerEditorWrapper.append($('.simditor'));
                 $loaderIndicator.fadeOut(200);
             }, function(err) {
                 console.log(err);
             });
     });
 
-    getEmails()
+
+
+
+    getEmails({}, UN_HANDLED)
         .then(function(res) {
-            fillPage(res.data);
+            res = res.data;
+            setEmailTableBody(res, UN_HANDLED);
+            isUnHandledTableDirty = false;
         });
+
+    // dispatcher type switcher
+    $handlerViewerTypeSwitcher.on('click', '.handler-viewer__type-switcher', function(e) {
+        var $switcher = $(e.target);
+        switchHandlerViewerType($switcher);
+    });
+
+
+    //// get assessors
+    //userStore.getAssessors()
+    //    .then(function(assessors) {
+    //        console.log(assessors);
+    //        assessors = assessors.data;
+    //        emailAssessors = emailAssessors.concat(assessors);
+    //        var $option;
+    //        emailAssessors.forEach(function(assessor){
+    //            $option = $('<option>');
+    //            $option.text(assessor.assessor_name);
+    //            $option.val(assessor.assessor_id);
+    //            $emailAssessorSelector.append($option);
+    //        });
+    //    });
+
+    // 分发邮件
+    $modalConfirmBtn.on('click', function() {
+        var assessorId = $emailAssessorSelector.val();
+        var err = assessorId === '-1' ? ERR_ASSESSOR_NONE : undefined;
+
+        if (err) {
+            Toast.show(err);
+        } else {
+            currentEmail.handler_id = handlerId;
+            currentEmail.isDispatched = '1';
+            currentEmail.tags = typeof currentEmail.tags === 'string' ? currentEmail.tags : currentEmail.tags.join('|');
+            console.log(currentEmail);
+            emailStore.updateEmail(currentEmail)
+                .then(function(email) {
+                    Toast.show(DISPATCH_TEXT + SUCCEED);
+                    $emailViewerModal.modal(HIDEN);
+                    $currentEmailTr.remove();
+                    console.log(email);
+                }, function(err) {
+                    Toast.show(DISPATCH_TEXT + FAILED);
+                    console.log(err);
+                });
+        }
+    });
+
+
+
 
     $modalConfirmBtn.on('click', function() {
         Toast.show('处理成功');

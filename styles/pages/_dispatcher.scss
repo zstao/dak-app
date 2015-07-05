@@ -1,6 +1,9 @@
 //
 .dispatcher-viewer {
   width: 80%;
+  &__type-switcher-holder {
+    @extend .user-viewer__type-switcher-holder;
+  }
   &__email-table-holder {
     height: $dispatcher-viewer__email-table-holder_height;
   }

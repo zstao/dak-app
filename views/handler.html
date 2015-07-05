@@ -25,10 +25,14 @@
         </div>
         <!-- main content -->
         <div class="main-body">
-            <!-- email dispatcher -->
+            <!-- email handler -->
             <div class="main-body__tab tab main-body__tab--active">
-                <div class="dispatcher-viewer row--full column--full box--clip">
-                    <div class="dispatcher-viewer__email-table-holder row--full">
+                <div class="handler-viewer row--full column--full box--clip text--center">
+                    <div class="handler-viewer__type-switcher-holder btn-group inline-block">
+                        <button class="btn handler-viewer__type-switcher btn-primary plr--extra active" data-type="handled">待处理邮件</button>
+                        <button class="btn handler-viewer__type-switcher btn-primary plr--extra" data-type="unhandled">已处理邮件</button>
+                    </div>
+                    <div class="handler-viewer__email-table-holder row--full">
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
@@ -37,13 +41,12 @@
                                     <th>时间</th>
                                 </tr>
                             </thead>
-                            <tbody class="email-rows">
-
-                            </tbody>
+                            <tbody class="email-rows handler-viewer__un-handled-table-body"></tbody>
+                            <tbody class="email-rows handler-viewer__handled-table-body"></tbody>
 
                         </table>
                     </div>
-                    <nav class="dispatcher-viewer__email-table-pagination text--center">
+                    <nav class="handler-viewer__email-table-pagination text--center">
                         <ul class="pagination">
                             <li>
                                 <a href="#" disabled aria-label="Previous">
@@ -67,20 +70,29 @@
                     <div id="email-creator-wrapper">
                         <textarea id="email-editor" placeholder="" autofocus></textarea>
                     </div>
-                    <div class="email-creator__actions-wrapper ptb">
-                        <button class="btn btn-primary">发送</button>
+                    <div class="email-creator__actions-wrapper box--clip text--center ptb row--full">
+                        <button class="btn btn-primary inline-block plr--extra ml--extra pull-right">发送</button>
+                        <button class="btn btn-primary inline-block plr--extra pull-right">清空</button>
                     </div>
                 </div>
             </div>
             <!-- setting tab -->
             <div class="main-body__tab tab">
-                <form role="form" class="form form__user-creation">
+                <form role="form" class="form form__setting">
                     <div class="form-group">
-                        <label for="user-creation__username">用户名</label>
-                        <input type="text" class="form-control" id="user-creation__username" placeholder="Username">
+                        <label for="user-setting__username">用户名</label>
+                        <input type="text" class="form-control" id="user-setting__username" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-setting__password">修改密码?</label>
+                        <input type="password" class="form-control" id="user-setting__password" placeholder="Enter New Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="user-setting__password-confirmation">确认新密码</label>
+                        <input type="password" class="form-control" id="user-setting__password-confirmation" placeholder="New Password Confirmation">
                     </div>
                     <h5 class="form__error alert alert-danger mt mb--lg"></h5>
-                    <input type="submit" value="保存" class="user-creation__confirm-btn btn btn-primary btn-lg btn-block" />
+                    <input type="submit" value="保存" class="user-setting__confirm-btn btn btn-primary btn-lg btn-block" />
 
                 </form>
             </div>
@@ -102,14 +114,14 @@
                             </h4>
                             <h4>
                                 <span class="label label-primary modal__email-metas-label">发送时间：</span>
-                                <span class="modal__email-send-at"></span>
+                                <span class="modal__email-sent-at"></span>
                             </h4>
                         </div>
                         <div class="plr--lg ptb--lg">
                             <div class="modal__email-content">
                             </div>
                         </div>
-                        <div class="modal__email-dispatcher mt--extra row--full">
+                        <div class="modal__email-handler mt--extra row--full">
                             <div class="meta-box plr ptb inline-block row--full">
                                 <span class="flag mtb">分发标签：</span>
                                 <div class="email__tags-holder"></div>
@@ -117,7 +129,7 @@
                             <div class="email__handler-editor-wrapper mt row--full">
                             </div>
                         </div>
-                        <div class="email__handler-selector-holder">
+                        <div class="email__assessor-selector-holder">
                             <h4 class="flag">选择审核人员
                                 <select class="form-control" id="email__assessor-selector">
                                 </select>
@@ -131,9 +143,10 @@
                 </div>
             </div>
         </div>
-        <div class="row--full text--center column--full loader-indicator">
+        <div class="row--full text--center fixed fixed--left fixed--top column--full loader-indicator">
             <i class="fa fa-spinner fa-pulse fa-3x"></i>
         </div>
+        <a href="./" class="fixed fixed--left ptb--lg plr--lg fixed--bottom fa fa-sign-out" style="font-size: 1.6em;"></a>
 
 
         <script type="text/template" id="tpl__pagination">

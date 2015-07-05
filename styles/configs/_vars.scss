@@ -17,6 +17,7 @@ $user-viewer__filter_height:                                  40px !default;
 $user-viewer__pagination_height:                              60px !default;
 $user-viewer__holder_height:                                  calc(100% - #{$user-viewer__type-switcher_height} - #{$user-viewer__filter_height} - #{$user-viewer__pagination_height}) !default;
 
+$dispatcher-viewer__type-switcher_height:                     60px !default;
 $dispatcher-viewer__email-table-pagination_height:            60px !default;
-$dispatcher-viewer__email-table-holder_height:                calc(100% - #{$dispatcher-viewer__email-table-pagination_height}) !default;
+$dispatcher-viewer__email-table-holder_height:                calc(100% - #{$dispatcher-viewer__email-table-pagination_height} - #{$dispatcher-viewer__type-switcher_height}) !default;
 // components

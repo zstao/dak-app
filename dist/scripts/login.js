@@ -8,9 +8,16 @@
     var loginErrorEl = $('.login-error');
     var loginBtn = $('.login-btn');
 
-    var LOGIN_URL = 'http://localhost:6005/auth';
-    var UN_PATTERN = /^\w[-\w]{4,20}$/;
-    var PW_PATTERN = /^\w[-\w]{5,20}$/;
+    var LOGIN_URL = 'http://192.168.15.44:8001/auth/login';
+    LOGIN_URL = 'http://192.168.0.144:8001/auth/login';
+    var UN_PATTERN = /^\w[-\w]{2,20}$/;
+    var PW_PATTERN = /^\w[-\w]{4,20}$/;
+
+    var toPage = {
+        'admin': 'root-manage.html',
+        'dispatcher': 'dispatcher.html',
+        'handler': 'handler.html'
+    };
 
     /////// login error handler
     function clearLoginError() {
@@ -68,15 +75,15 @@
         var credits;
         login(rawAccount)
             .then(function(res) {
-                credits = res && res.data || {};
-                if (!credits.to) {
+                res = res.data || {};
+                console.log(res);
+                var to = toPage[res.user_role];
+                if (!to) {
                     clearSessionStorage();
-                    setLoginError(credits.msg);
+                    setLoginError(res.message || '');
                 } else {
-                    storeCredits(credits);
-                    if (credits && credits.to) {
-                        window.location.href = credits.to;
-                    }
+                    storeCredits(res);
+                    window.location.href = to;
                 }
             }, function(err) {
                 console.log(err);

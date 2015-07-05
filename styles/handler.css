@@ -638,7 +638,7 @@
  * @param  {[type]} $with-transition: null           [description]
  * @return {[type]}                   [description]
  */
-.cursor--pointer, .action-bar .tab-navs__item, .user-viewer .user, .dispatcher-viewer tr, .email__tag-rm {
+.cursor--pointer, .action-bar .tab-navs__item, .user-viewer .user, .dispatcher-viewer tr, .email__tag-rm, .handler-viewer tr {
   cursor: pointer; }
 .cursor--disabled {
   cursor: not-allowed; }
@@ -712,7 +712,7 @@ html body input[disabled], [disabled] {
 
 .user-viewer {
   width: 80%; }
-  .user-viewer__type-switcher-holder {
+  .user-viewer__type-switcher-holder, .dispatcher-viewer__type-switcher-holder, .handler-viewer__type-switcher-holder {
     height: 40px; }
   .user-viewer__filter {
     height: 40px; }
@@ -741,12 +741,13 @@ html body input[disabled], [disabled] {
 
 .empty-indicator {
   min-height: 500px;
+  padding-top: 100px;
   color: #458cc8; }
 
 .dispatcher-viewer {
   width: 80%; }
   .dispatcher-viewer__email-table-holder {
-    height: calc(100% - 60px); }
+    height: calc(100% - 60px - 60px); }
   .dispatcher-viewer__email-table-pagination {
     height: 60px; }
 
@@ -784,3 +785,10 @@ html body input[disabled], [disabled] {
   width: 100%;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0; }
+
+.handler-viewer {
+  width: 80%; }
+  .handler-viewer__email-table-holder {
+    height: calc(100% - 60px - 60px); }
+  .handler-viewer__email-table-pagination {
+    height: 60px; }

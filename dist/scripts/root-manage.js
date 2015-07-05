@@ -19,7 +19,7 @@ requirejs.config({
     }
 });
 
-requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap', 'toast'], function(CONF, _, $, validator, userStore, axios, bootstrap, Toast) {
+requirejs(['CONF', '_', 'jquery', 'utils', 'validator', 'userStore', 'axios', 'bootstrap', 'toast'], function(CONF, _, $, Utils, validator, userStore, axios, bootstrap, Toast) {
     var CLS = '.';
     var ACTIVE = '--active';
 
@@ -36,6 +36,7 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
 
     var $emailForm = $('.form__mail-conf');
     var $emailAddr = $('#email__address');
+    var $emailIMAPAddr = $('#email__imap-address');
     var $emailPwd = $('#email__password');
     var $emailPwdConfirmation = $('#email__password-confirmation');
 
@@ -55,6 +56,7 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
     var $currentUsersList = $('.user-viewer__list.active');
 
     var ERR_EMAIL_INVALID = '邮箱非法';
+    var ERR_EMAIL_IMAP_INVALID = 'IMAP地址有误';
     var ERR_PWD_INVALID = '密码有误';
     var ERR_PWD_NOT_SAME = '确认密码不一致';
     var ERR_USERNAME_INVALID = '用户名有误';
@@ -105,7 +107,6 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
                 $list.append($user);
             }
         } else {
-            console.log(len);
             $list.append($emptyIndicator);
         }
     }
@@ -120,9 +121,7 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
         if ($currentUsersList.children().length === 0) {
             getUsers({role: $currentUserType.data('type')})
                 .then(function(data) {
-                    console.log(data);
-                    data = data.data && data.data.list;
-                    addUsersToList(data ,$currentUsersList);
+                    addUsersToList(data.data ,$currentUsersList);
                 }, function(err){
                     console.log(err);
                 });
@@ -130,7 +129,7 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
     }
 
     function getEmailConf() {
-        return axios.get(CONF.API.conf.email);
+        return axios.get(Utils.appendQueries(CONF.API.conf.email, {uid: window.sessionStorage.getItem('user_id')}));
     }
     function getUsers(cond) {
         $loaderIndicator.fadeIn(200);
@@ -143,7 +142,7 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
 
 
     // tab switcher
-    $tabNavsWrapper.on('click', function(e) {
+    $tabNavsWrapper.on('click', '.tab-navs__item', function(e) {
         e.preventDefault();
         var $target = $(e.target);
         var targetIndex;
@@ -161,11 +160,13 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
     $emailForm.on('submit', function(e) {
         e.preventDefault();
         var credit = {
-            address: $emailAddr.val(),
+            email_address: $emailAddr.val(),
+            imap_address: $emailIMAPAddr.val(),
             password: $emailPwd.val(),
             passwordConfirmation: $emailPwdConfirmation.val()
         };
-        var err = !validator.isEmail(credit.address) ? ERR_PWD_NOT_SAME : undefined;
+        var err = !validator.isEmail(credit.email_address) ? ERR_PWD_NOT_SAME : undefined;
+        err = err || (!credit.imap_addressERR_PWD_INVALID ? ERR_EMAIL_IMAP_INVALID : undefined);
         err = err || (!credit.password || credit.password.length < 6 ? ERR_PWD_INVALID : undefined);
         err = err || (credit.password !== credit.passwordConfirmation ? ERR_PWD_NOT_SAME : undefined);
 
@@ -175,7 +176,7 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
             axios.put(CONF.API.conf.email, _.merge({}, conf.email, credit))
                 .then(function(res) {
                     res = res.data;
-                    if (res && res._id) {
+                    if (res) {
                         conf.email = _.merge({}, conf.email, res);
                         Toast.show(EMAIL_CONF + SUCCEED);
                     }
@@ -195,13 +196,13 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
     $userCreationFrom.on('submit', function(e) {
         e.preventDefault();
         var account = {
-            username: $username.val(),
+            name: $username.val(),
             password: $userPwd.val(),
             passwordConfirmation: $userPwdConfirmation.val(),
             role: $userType.val()
         };
 
-        var err = !account.username || account.username.length < 4 ? ERR_USERNAME_INVALID : undefined;
+        var err = !account.name || account.name.length < 4 ? ERR_USERNAME_INVALID : undefined;
         err = err || (!account.password || account.password.length < 4 ? ERR_PWD_INVALID : undefined);
         err = err || (account.password !== account.passwordConfirmation ? ERR_PWD_NOT_SAME : undefined);
         err = err || (!account.role ? ERR_USER_TYPE_NONE : undefined);
@@ -210,7 +211,12 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
         } else {
             userStore.create(account)
                 .then(function(res) {
-                    Toast.show('成功创建用户');
+                    res = res.data;
+                    if (res && res.message) {
+                        setFormError($userCreationFrom, res.message);
+                    } else {
+                        Toast.show('成功创建用户');
+                    }
                 }, function(error) {
                 });
         }
@@ -233,15 +239,18 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'axios', 'bootstrap'
     // init show email conf
     getEmailConf()
         .then(function(email) {
-            email = email.data[0];
-            if (email && email.address) {
+            email = email.data;
+            console.log(email);
+            if (email && email.email_address) {
                 conf.email = email;
-                $emailAddr.val(email.address);
+                $emailAddr.val(email.email_address);
+                $emailIMAPAddr.val(email.imap_address);
+                $emailPwd.val(email.password);
             }
         });
     getUsers({role: 'dispatcher'})
         .then(function(res) {
-            addUsersToList(res.data && res.data.list);
+            addUsersToList(res.data);
         });
 
 });
