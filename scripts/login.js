@@ -9,7 +9,8 @@
     var loginBtn = $('.login-btn');
 
     var LOGIN_URL = 'http://192.168.15.44:8001/auth/login';
-    LOGIN_URL = 'http://192.168.0.144:8001/auth/login';
+    LOGIN_URL = '/api/auth/login';
+    LOGIN_URL = 'http://www.sify21.com:8001/auth/login';
     var UN_PATTERN = /^\w[-\w]{2,20}$/;
     var PW_PATTERN = /^\w[-\w]{4,20}$/;
 

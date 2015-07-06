@@ -113,8 +113,8 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
                         isHandledTableDirty = false;
                     });
             } else {
-	      setEmailTableBody(index === 0 ? UN_HANDLED : HANDLED);
-	    }
+                setEmailTableBody(index === 0 ? UN_HANDLED : HANDLED);
+            }
         }
     }
 
@@ -127,30 +127,30 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
         var $_tbd = tbdStatus !== UN_HANDLED ? $unHandledEmailTableBody : $handledEmailTableBody;
         var emailRow, emailRows = [];
         $_tbd.fadeOut(100);
-	$tbd.fadeIn(100);
-	
+        $tbd.fadeIn(100);
+
         console.log(emails);
         if (emails != undefined) {
-	  console.log(emails);
-	  if (emails.count > 0) {
-	    emails = emails.mailList;
-	    emails.forEach(function(email) {
-                emailRow = $compiledEmailTpl(email);
-                emailRows.push(emailRow);
-                $tbd.append($(emailRow));
-            });
-	  } else {
-	    $emptyIndicator.fadeIn(500);
-            $viewerEmailTableHolder.append($emptyIndicator);
-	  }
+            console.log(emails);
+            if (emails.count > 0) {
+                emails = emails.mailList;
+                emails.forEach(function(email) {
+                    emailRow = $compiledEmailTpl(email);
+                    emailRows.push(emailRow);
+                    $tbd.append($(emailRow));
+                });
+            } else {
+                $emptyIndicator.fadeIn(500);
+                $viewerEmailTableHolder.append($emptyIndicator);
+            }
         } else {
-	  if ($tbd.children().length > 0) {
-	    $emptyIndicator.fadeOut(100);
-	  } else {
-	    $emptyIndicator.fadeIn(100);
-	  }
+            if ($tbd.children().length > 0) {
+                $emptyIndicator.fadeOut(100);
+            } else {
+                $emptyIndicator.fadeIn(100);
+            }
 
-	}
+        }
     }
 
     function setCurrentEmail($dom, email) {

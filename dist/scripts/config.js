@@ -14,7 +14,8 @@ define(function() {
 
     var API_ROOT = 'http://192.168.15.44:8001';
     var MOCK_ROOT = 'http://localhost:3000';
-    API_ROOT = '/api';
+    API_ROOT = 'http://192.168.0.144:8001';
+    API_ROOT = 'http://www.sify21.com:8001';
 
     conf.root = API_ROOT + '/admin';
     conf.email = conf.root + '/getEmailConf';
@@ -24,7 +25,6 @@ define(function() {
     user.addUser = user.root + '/addUser';
     user.pageCount = user.root + '/pages';
     user.getHandlers = API_ROOT + DISPATCHER + '/getHandlerList';
-    user.getAssessors = API_ROOT + HANDLER + '/getAssessors';
 
 
 

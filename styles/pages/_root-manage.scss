@@ -96,8 +96,18 @@
         background-color: $bootstrap-primary;
         border-radius: 4px;
         color: white;
-        &__avatar {
-            @extend .mr--lg;
+        &-metas {
+            @extend  .inline-block;
+            @extend .ml--lg;
+            &__avatar {
+                @extend .mr--lg;
+            }
+            &__name {
+                @extend .flag;
+            }
+            &__created-at {
+                color: #ddd;
+            }
         }
     }
 }
@@ -107,6 +117,7 @@
     @extend .fixed--left;
     @extend .row--full;
     @extend .column--full;
+    z-index: 10;
     padding-top: 200px;
     color: $bootstrap-primary;
 }

@@ -86,13 +86,29 @@ requirejs(['CONF', '_', 'jquery', 'utils', 'validator', 'userStore', 'axios', 'b
     function createUserDom(user) {
         var $user = $('<div>');
         var $avatar = $('<img>');
+        var $userMetas = $('<div>');
+        var $username = $('<h4>');
+        var $createdAt = $('<span>');
 
         $user.addClass('user');
-        $avatar.addClass('img-circle user__avatar');
 
-        $avatar.attr('src', user.avatar);
+        $userMetas.addClass('user-metas');
+
+        $avatar.addClass('img-circle user__avatar');
+        $avatar.attr('src', user.avatar || '/statics/images/default-avatar.png');
+
+        $username.addClass('user-metas__name');
+        $username.text('用户名：' + user.username);
+
+        $createdAt.addClass('user-metas__created-at');
+        $createdAt.text('创建于: ' + (new Date(+user.created_at)).toLocaleDateString());
+
+        $userMetas.append($username);
+        $userMetas.append($createdAt);
+
         $user.append($avatar);
-        $user.append($('<span>').text(user.username));
+        $user.append($userMetas);
+
         return $user;
     }
     function addUsersToList(users, $list) {

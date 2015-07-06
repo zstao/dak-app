@@ -128,10 +128,9 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
         var $tbd = tbdStatus === UN_DISPATCHED ? $unDispatchedEmailTableBody : $dispatchedEmailTableBody;
         var $_tbd = tbdStatus !== UN_DISPATCHED ? $unDispatchedEmailTableBody : $dispatchedEmailTableBody;
         var emailRow, emailRows = [];
-        $_tbd.fadeOut(100);
-        $tbd.fadeIn(100);
-        console.log(emails);
-	 $emptyIndicator.fadeOut(100);
+        $_tbd.hide();
+        $tbd.show();
+        $emptyIndicator.fadeOut(100);
         if (emails != undefined) {
             if (emails.count > 0) {
                 emails = emails.mailList;
@@ -145,14 +144,14 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
                 $viewerEmailTableHolder.append($emptyIndicator);
             }
         } else {
-	   
-	}
-	if ($tbd.children().length > 0) {
-	    $emptyIndicator.fadeOut(100);
-	  } else {
-	    $emptyIndicator.fadeIn(100);
-	  }
-        
+
+        }
+        if ($tbd.children().length > 0) {
+            $emptyIndicator.fadeOut(100);
+        } else {
+            $emptyIndicator.fadeIn(100);
+        }
+
     }
 
     function setCurrentEmail($dom, email) {

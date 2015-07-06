@@ -102,16 +102,18 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
                 getEmails({}, UN_HANDLED)
                     .then(function(res) {
                         clearEmailTableBody(UN_HANDLED);
-                        setEmailTableBody(res.data, UN_HANDLED);
+                        setEmailTableBody(UN_HANDLED,res.data);
                         isUnHandledTableDirty = false;
                     });
             } else if (isHandledTableDirty){
                 getEmails({}, HANDLED)
                     .then(function(res) {
                         clearEmailTableBody(HANDLED);
-                        setEmailTableBody(res.data, HANDLED);
+                        setEmailTableBody(HANDLED,res.data);
                         isHandledTableDirty = false;
                     });
+            } else {
+                setEmailTableBody(index === 0 ? UN_HANDLED : HANDLED);
             }
         }
     }
@@ -120,22 +122,34 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
         var $tbd = tbdStatus === UN_HANDLED ? $unHandledEmailTableBody : $handledEmailTableBody;
         $tbd.empty();
     }
-    function setEmailTableBody(emails, tbdStatus) {
+    function setEmailTableBody(tbdStatus,emails) {
         var $tbd = tbdStatus === UN_HANDLED ? $unHandledEmailTableBody : $handledEmailTableBody;
         var $_tbd = tbdStatus !== UN_HANDLED ? $unHandledEmailTableBody : $handledEmailTableBody;
         var emailRow, emailRows = [];
         $_tbd.fadeOut(100);
+        $tbd.fadeIn(100);
+
         console.log(emails);
-        emails = emails.count > 0 ? emails.mailList : [];
-        if (emails.length > 0) {
-            emails.forEach(function(email) {
-                emailRow = $compiledEmailTpl(email);
-                emailRows.push(emailRow);
-                $tbd.append($(emailRow));
-            });
+        if (emails != undefined) {
+            console.log(emails);
+            if (emails.count > 0) {
+                emails = emails.mailList;
+                emails.forEach(function(email) {
+                    emailRow = $compiledEmailTpl(email);
+                    emailRows.push(emailRow);
+                    $tbd.append($(emailRow));
+                });
+            } else {
+                $emptyIndicator.fadeIn(500);
+                $viewerEmailTableHolder.append($emptyIndicator);
+            }
         } else {
-            $emptyIndicator.fadeIn(500);
-            $viewerEmailTableHolder.append($emptyIndicator);
+            if ($tbd.children().length > 0) {
+                $emptyIndicator.fadeOut(100);
+            } else {
+                $emptyIndicator.fadeIn(100);
+            }
+
         }
     }
 
@@ -220,7 +234,7 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
     getEmails({}, UN_HANDLED)
         .then(function(res) {
             res = res.data;
-            setEmailTableBody(res, UN_HANDLED);
+            setEmailTableBody(UN_HANDLED,res);
             isUnHandledTableDirty = false;
         });
 
@@ -232,19 +246,19 @@ requirejs(['CONF', '_', 'jquery', 'validator', 'userStore', 'emailStore', 'axios
 
 
     //// get assessors
-    //userStore.getAssessors()
-    //    .then(function(assessors) {
-    //        console.log(assessors);
-    //        assessors = assessors.data;
-    //        emailAssessors = emailAssessors.concat(assessors);
-    //        var $option;
-    //        emailAssessors.forEach(function(assessor){
-    //            $option = $('<option>');
-    //            $option.text(assessor.assessor_name);
-    //            $option.val(assessor.assessor_id);
-    //            $emailAssessorSelector.append($option);
-    //        });
-    //    });
+    userStore.getAssessors()
+        .then(function(assessors) {
+            console.log(assessors);
+            assessors = assessors.data.assessorList;
+            emailAssessors = emailAssessors.concat(assessors);
+            var $option;
+            emailAssessors.forEach(function(assessor){
+                $option = $('<option>');
+                $option.text(assessor.name);
+                $option.val(assessor.id);
+                $emailAssessorSelector.append($option);
+            });
+        });
 
     // 分发邮件
     $modalConfirmBtn.on('click', function() {
